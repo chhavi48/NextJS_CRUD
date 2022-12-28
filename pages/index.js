@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Table from '../Components/table'
 import styles from '../styles/Home.module.css'
 import {BiUserPlus} from 'react-icons/bi'
+import Form from '../Components/form'
 export default function Home() {
   return (
     <section className={styles.container}>
@@ -21,6 +22,10 @@ export default function Home() {
           </button>
         </div>
         </div>
+
+      <div className='container mx-auto'>
+      <Form/>
+      </div>
         <div className='container mx-auto'>
         <Table></Table>
         </div>
