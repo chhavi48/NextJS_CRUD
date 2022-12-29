@@ -1,6 +1,9 @@
 import { useReducer } from "react"
 import { BiPlus } from "react-icons/bi"
 import Success from "./success"
+import { Error } from "./Error"
+import {postUser,getUsers} from "../lib/helper"
+import { useQueryClient,useMutation } from "react-query"
 const formReducer=(state,event)=>{
  return {
     ...state,
@@ -9,17 +12,41 @@ const formReducer=(state,event)=>{
 }
 
 export default function AddUser(){
+    const queryClient = useQueryClient()
+        
     const [formdata,setformdata]=useReducer(formReducer,{})
+    const addMutation=useMutation(postUser,{
+        onSuccess:()=>{
+            queryClient.prefetchQuery('users',getUsers)
+        }
+    })
+
 
     const handleSubmit=(e)=>{
         e.preventDefault()
         if(Object.keys(formdata).length==0) return console.log("don't have a form data")
-        console.log(formdata)
+        let {firstname,lastname,email,salary,date,status}=formdata;
         // setformdata({...formdata,name:"",password:""})
-
+   const model={
+    name:`${firstname} ${lastname}`,
+    avatar:`https://randomuser.me/api/portraits/men/${Math.floor(Math.random()*10)}.jpg`,
+    email,
+    salary,
+    date,
+    status:status ?? 'Active'
+   }
+   addMutation.mutate(model)
         
     }
-    if(Object.keys(formdata).length>0) return <Success msg={"data added successfully"}></Success>
+
+
+    // if(Object.keys(formdata).length>0) return <Success msg={"data added successfully"}></Success>
+
+    if(addMutation.isLoading) return <div>loading msg..</div>
+    if(addMutation.isError) return <Error msg={addMutation.error.msg}></Error>
+    if(addMutation.isSuccess) return <Success msg={"added sucess"}></Success>
+
+
     return (
         <form className="grid lg:grid-cols-2 w-4/6 gap-4"
         onSubmit={handleSubmit}>
@@ -46,8 +73,10 @@ export default function AddUser(){
              placeholder="Salary" name="salary" className="border w-full px-5 py-3 focus:outline-none rounded-md" />
             </div>
             <div className="input-type">
-            onChange={setformdata}
-            <input type="date"  name="date" className="border w-full px-5 py-3 focus:outline-none rounded-md" />
+        
+            <input type="date"
+                onChange={setformdata}
+              name="date" className="border w-full px-5 py-3 focus:outline-none rounded-md" />
             </div>
 
             <div>

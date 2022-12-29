@@ -7,7 +7,7 @@ import { useState } from 'react'
 export default function Home() {
   const [visible, setvisible] =useState(false)
 const handler=()=>{
-  setvisible(visible ? false : true)
+  setvisible(!visible)
 }
   return (
     <section className={styles.container}>
