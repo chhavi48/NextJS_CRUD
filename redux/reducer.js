@@ -14,10 +14,13 @@ export const ReducerSlice = createSlice({
         deleteAction : (state,action) => {
             state.client.deleteId=action.payload
 
+        },
+        updateAction : (state, action) => {
+            state.client.formId = action.payload
         }
     }
 })
 
-export const { toggleChangeAction,deleteAction } = ReducerSlice.actions
+export const { toggleChangeAction,deleteAction,updateAction } = ReducerSlice.actions
 
 export default ReducerSlice.reducer;

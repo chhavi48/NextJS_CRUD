@@ -10,9 +10,16 @@ export default async function handler(req, res){
         case "GET":
             getUsers(req, res)
             break;
+            case 'PUT':
+                putUser(req, res)
+                break;
+            case 'DELETE':
+                deleteUser(req, res)
+                break;
+
             default:
                 res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
-                res.status(405).end('Method ${method} not supported')
+                res.status(405).end(`Method ${method} not supported`)
                 break;
     }
 }

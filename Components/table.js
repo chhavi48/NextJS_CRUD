@@ -2,7 +2,7 @@ import { BiEdit, BiTrashAlt } from "react-icons/bi";
 import { getUsers } from "../lib/helper";
 import { useQuery } from 'react-query';
 import { useSelector, useDispatch } from 'react-redux'
-import { toggleChangeAction,deleteAction} from '../redux/reducer'
+import { toggleChangeAction,deleteAction,updateAction} from '../redux/reducer'
 
 export default function Table(){
 
@@ -49,9 +49,13 @@ function Tr({_id, name, avatar, email, salary, date, status }){
 
     const visible = useSelector((state) => state.app.client.toggleForm)
     const dispatch = useDispatch()
-   console.log(visible)
+//    console.log(visible)
     const onUpdate = () => {
-        dispatch(toggleChangeAction())
+        dispatch(toggleChangeAction(_id))
+        if(visible){
+            dispatch(updateAction(_id))
+        }
+        
     }
 const onDelete=({id})=>{
     if(!visible){
