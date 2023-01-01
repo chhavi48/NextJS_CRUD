@@ -1,20 +1,20 @@
-import { useReducer } from "react"
+
 import { BiBrush } from "react-icons/bi"
-import Success from "./success"
+
 import { useQuery ,useMutation,useQueryClient} from "react-query"
-import { getUser,updateUser, } from "../lib/helper"
+import { getUser,getUsers,updateUser, } from "../lib/helper"
 
 export default function UpdateUser({formId,formdata,setformdata}){
     const queryClient=useQueryClient()
     
     const {isLoading, isError, data, error} = useQuery(['users', formId], () => getUser(formId))
     const updateMutation=useMutation((newData)=>updateUser(formId,newData),{
-        // onSuccess:async(data) => {
+        onSuccess:async(data) => {
         
-        //     queryClient.setQueryData('users',(old)=>[data])
-        //     // console.log('data updated')
-        //     // window.location.reload()
-        // }
+            // queryClient.setQueryData('users',(old)=>[data])
+            // console.log('data updated')
+            queryClient.prefetchQuery('users',getUsers)
+        }
         
     })
 
@@ -122,6 +122,7 @@ export default function UpdateUser({formId,formdata,setformdata}){
                     Update    
                 <span className="px-1"><BiBrush size={24}></BiBrush></span>
         </button>
+     {/* window.location.reload() */}
             </form>
     )
     }
